@@ -35,24 +35,20 @@ class MemTestCase(PluginTestCase):
 
 class MemInternalTestCase(unittest.TestCase):
     def test_tracemalloc_already_tracing(self):
-        with mock.patch.object(
-            plugin.callbacks.Plugin, "__init__", return_value=None
-        ), mock.patch.object(
-            plugin.tracemalloc, "is_tracing", return_value=True
-        ), mock.patch.object(
-            plugin.tracemalloc, "start"
-        ) as mock_start:
+        with (
+            mock.patch.object(plugin.callbacks.Plugin, "__init__", return_value=None),
+            mock.patch.object(plugin.tracemalloc, "is_tracing", return_value=True),
+            mock.patch.object(plugin.tracemalloc, "start") as mock_start,
+        ):
             plugin.Mem(mock.sentinel.irc)
             mock_start.assert_not_called()
 
     def test_tracemalloc_not_tracing(self):
-        with mock.patch.object(
-            plugin.callbacks.Plugin, "__init__", return_value=None
-        ), mock.patch.object(
-            plugin.tracemalloc, "is_tracing", return_value=False
-        ), mock.patch.object(
-            plugin.tracemalloc, "start"
-        ) as mock_start:
+        with (
+            mock.patch.object(plugin.callbacks.Plugin, "__init__", return_value=None),
+            mock.patch.object(plugin.tracemalloc, "is_tracing", return_value=False),
+            mock.patch.object(plugin.tracemalloc, "start") as mock_start,
+        ):
             plugin.Mem(mock.sentinel.irc)
             mock_start.assert_called_once_with()
 
